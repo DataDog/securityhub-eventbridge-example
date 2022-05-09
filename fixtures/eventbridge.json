@@ -16,6 +16,7 @@
        "event_type":"api",
        "date_ended":"None",
        "tags":[
+          "iaas:aws",
           "account:671642278147",
           "forwarder_memorysize:1024",
           "forwarder_version:3.16.4",
