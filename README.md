@@ -12,6 +12,12 @@ This Cloudformation and accompanying Lambda function seek to create a one-way in
 
 TBD
 
+## Testing
+
+1. Run `make build` _This builds the testing docker container_
+2. Run `make test`
+
+
 ### License
 
 This project is licensed under the Apache 2 License
