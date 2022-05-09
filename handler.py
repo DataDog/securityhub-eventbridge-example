@@ -153,6 +153,8 @@ def datadog_finding_to_asff4(event):
     )
     asff_event["Types"] = get_asff4_event_tag(event) # Need to add this metadata to our alert tags
 
+    asff_event_type_debug = asff_event["Types"]
+    logger.debug(f"here the Types for the asff event: {asff_event_type_debug}")
 
 def send_to_security_hub(client, findings):
     try:
