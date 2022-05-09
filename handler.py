@@ -1,5 +1,6 @@
 
 import boto3
+import botocore
 import json
 import logging
 import sys
@@ -125,7 +126,7 @@ def handle(event={}, context={}):
 
         try:
             client = boto3.client('securityhub')
-        except ClientException as e:
+        except botocore.exceptions.ClientError as e:
             logger.error(f"SecurityHub client could not be initialized due to: {e}.")
 
         # Initialize a list to store findings in the Security Hub format
