@@ -18,16 +18,15 @@ logging.basicConfig(
     handlers=handlers
 )
 
+SUCCESS_MESSAGE = {
+    'statusCode': 200,
+    'body': json.dumps("Datadog event successfully sent to security hub.")
+}
 
 # Only Cloud SIEM is supported in initial release
 SUPPORTED_FINDING_TYPES = ["Security Monitoring"]
-SUPPORT_SOURCE_TYPES = ["C"]
-
-SUCCESS_MESSAGE = {
-    'statusCode': 200,
-    'body': json.dumps('Hello from Lambda!')
-}
-
+SUPPORT_SOURCE_TYPES = ["cloudtrail"]
+EXCLUDED_TYPES = []
 
 RESOURCE_DATASTRUCTURE = dict(
     Type=None,
@@ -37,7 +36,6 @@ RESOURCE_DATASTRUCTURE = dict(
     Tags=dict(),
     Details=None
 )
-
 
 SECURITHUB_DATASTRUCTURE = dict(
     AwsAccountId=None,
@@ -98,10 +96,6 @@ def datadog_finding_to_asff4(event):
         Original=event["detail"]["meta"]["signal"]["severity"]
     )
     asff_event["Types"] = ["TTPs"] # Need to add this metadata to our alert tags
-
-    import pprint
-
-    print(pprint.pprint(asff_event))
     return asff_event
 
 
@@ -118,7 +112,11 @@ def send_to_security_hub(client, findings):
 
 def handle(event={}, context={}):
     if event["detail"]["source_type_name"] in SUPPORTED_FINDING_TYPES:
-        client = boto3.client('securityhub')
+
+        try:
+            client = boto3.client('securityhub')
+        except ClientException as e:
+            logger.error(f"SecurityHub client could not be initialized due to: {e}.")
 
         # Initialize a list to store findings in the Security Hub format
         findings = []
