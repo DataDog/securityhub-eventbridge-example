@@ -28,6 +28,7 @@ SUPPORTED_FINDING_TYPES = ["Security Monitoring"]
 SUPPORT_SOURCE_TYPES = ["cloudtrail"]
 EXCLUDED_TYPES = []
 
+
 RESOURCE_DATASTRUCTURE = dict(
     Type=None,
     Id=None,
@@ -36,6 +37,7 @@ RESOURCE_DATASTRUCTURE = dict(
     Tags=dict(),
     Details=None
 )
+
 
 SECURITHUB_DATASTRUCTURE = dict(
     AwsAccountId=None,
@@ -96,6 +98,14 @@ def datadog_finding_to_asff4(event):
         Original=event["detail"]["meta"]["signal"]["severity"]
     )
     asff_event["Types"] = ["TTPs"] # Need to add this metadata to our alert tags
+
+    # Section for creating Security Hub ASFF
+    # assf_event_tag = ""
+    # detail_tags = event["detail"]
+    # event_tags = detail_tags["tags"]
+  
+
+
     return asff_event
 
 
