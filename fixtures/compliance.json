@@ -1,0 +1,76 @@
+{
+    "version":"0",
+    "id":"e0e386ff-941a-e093-da0e-cc5e0ad5bd3e",
+    "detail-type":"Datadog Alert Notification",
+    "source":"aws.partner/datadog.com/security-alerts",
+    "account":"671642278147",
+    "time":"2022-04-29T23:07:02Z",
+    "region":"us-west-2",
+    "resources":[
+       
+    ],
+    "detail":{
+       "date_detected":1651273619000,
+       "alert_type":"error",
+       "last_updated":1651273619000,
+       "event_type":"api",
+       "date_ended":"None",
+       "tags":[
+          "cloud:aws",
+          "control:1.2.1",
+          "control:1.3.1",
+          "control:1.3.2",
+          "control:1.3.4",
+          "control:1.3.6",
+          "control:164.308-a-1-ii-b",
+          "control:164.308-a-3-i",
+          "control:164.312-a-1",
+          "control:25.2",
+          "framework:gdpr",
+          "framework:hipaa",
+          "framework:pci",
+          "framework:soc-2",
+          "framework_version:1",
+          "framework_version:2",
+          "framework_version:3.2.1",
+          "requirement:access-control",
+          "requirement:data-protection",
+          "requirement:firewall-configuration",
+          "requirement:security-management-process",
+          "requirement:security-of-processing",
+          "requirement:workforce-security",
+          "security:compliance",
+          "source:s3"
+       ],
+       "msg_title":"{@bucket_name:imagemicroservice.us-west-2.671642278147} [Failed] S3 bucket is publicly accessible (via policy)",
+       "priority":"normal",
+       "source_type_name":"Security Monitoring",
+       "msg_text":"%%%\n## Description\n\nUpdate your bucket policy as your Amazon S3 bucket is currently publicly accessible.\n\n## Rationale\n\nPublicly accessible S3 buckets through bucket policies give any AWS user the ability to list, download, delete, and upload objects and edit object permissions.\n\n## Remediation\n\n### Console\n\nFollow the [Controlling access to a bucket with user policies][1] docs to edit your existing policy and set the policy permissions to private.\n\n### CLI\n\n1. To remove the existing public bucket policy, run `delete-bucket-policy` with [your bucket name][2].\n\n  ```\n  delete-bucket-policy\n  --bucket your-bucket-name\n  ```\n\n2. Create a new non-public bucket policy using the [AWS Policy Generator][3].\n\n[1]: https://docs.aws.amazon.com/AmazonS3/latest/userguide/walkthrough1.html\n[2]: https://awscli.amazonaws.com/v2/documentation/api/latest/reference/s3api/delete-bucket-policy.html#synopsis\n[3]: http://awspolicygen.s3.amazonaws.com/policygen.html\n- - - - - - - - - - - - -\n[[View Security Signal](https://app.datadoghq.com/security?event=AQAAAYB3k8zyAAAAAAAAAABubG0tbGNvLTR5MC0zLS0xMjI3MTY3Mzc2&start=1651271816626&end=1651275416626)] · [[Edit Security Rule](https://app.datadoghq.com/security/configuration/rules/edit/nlm-lco-4y0)] · [[Manage Notification](https://app.datadoghq.com/security/configuration/notification-profiles/edit/itf-c1u-xur)]\nThis notification was triggered by [[Critical and High Severity Signals](https://app.datadoghq.com/security/configuration/notification-profiles/edit/itf-c1u-xur)].\n@awseventbridge-security-alerts\n%%%",
+       "meta":{
+          "signal":{
+             "severity":"critical",
+             "title":"[Failed] S3 bucket is publicly accessible (via policy)",
+             "rule":{
+                "group_by_fields":{
+                   "@bucket_name":"imagemicroservice.us-west-2.671642278147"
+                },
+                "type":"cloud_configuration",
+                "name":"S3 bucket is publicly accessible (via policy)",
+                "id":"nlm-lco-4y0"
+             },
+             "is_secure_org":false,
+             "msg":"## Description\n\nUpdate your bucket policy as your Amazon S3 bucket is currently publicly accessible.\n\n## Rationale\n\nPublicly accessible S3 buckets through bucket policies give any AWS user the ability to list, download, delete, and upload objects and edit object permissions.\n\n## Remediation\n\n### Console\n\nFollow the [Controlling access to a bucket with user policies][1] docs to edit your existing policy and set the policy permissions to private.\n\n### CLI\n\n1. To remove the existing public bucket policy, run `delete-bucket-policy` with [your bucket name][2].\n\n  ```\n  delete-bucket-policy\n  --bucket your-bucket-name\n  ```\n\n2. Create a new non-public bucket policy using the [AWS Policy Generator][3].\n\n[1]: https://docs.aws.amazon.com/AmazonS3/latest/userguide/walkthrough1.html\n[2]: https://awscli.amazonaws.com/v2/documentation/api/latest/reference/s3api/delete-bucket-policy.html#synopsis\n[3]: http://awspolicygen.s3.amazonaws.com/policygen.html",
+             "id":"AQAAAYB3k8zyAAAAAAAAAABubG0tbGNvLTR5MC0zLS0xMjI3MTY3Mzc2"
+          },
+          "result":{
+             "logs_url":"/security?event=AQAAAYB3k8zyAAAAAAAAAABubG0tbGNvLTR5MC0zLS0xMjI3MTY3Mzc2&start=1651271816626&end=1651275416626"
+          },
+          "group_by_values":{
+             "@bucket_name":"imagemicroservice.us-west-2.671642278147"
+          }
+       },
+       "aggregate_event_id":"None",
+       "date":1651273619000,
+       "id":"6492963025863666728"
+    }
+ }
