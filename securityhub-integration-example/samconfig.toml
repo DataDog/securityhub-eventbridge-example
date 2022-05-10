@@ -1,0 +1,13 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "datadog-securityhub-forwarder"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-1cm5qqj718fqa"
+s3_prefix = "datadog-securityhub-forwarder"
+region = "us-west-2"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+disable_rollback = true
+parameter_overrides = "EventBusName=\"aws.partner/datadog.com/security-alerts\" SecurityHubArn=\"arn:aws:securityhub:us-west-2:671642278147:hub/default\""
+image_repositories = []
