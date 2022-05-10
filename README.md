@@ -42,7 +42,7 @@ Example Datadog security signal viewed in AWS Security Hub:
 
 1. Run `make build` _This builds the testing docker container_
 2. Run `make test`
-3. Prior to committing code please format using `make format`
+3. Prior to committing code, please format using `make format`
 
 ### License
 
