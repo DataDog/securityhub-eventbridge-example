@@ -2,7 +2,7 @@
 
 This quick start enables customers of Datadog's security platform to send security signals from Datadog to [AWS Security Hub](https://aws.amazon.com/security-hub/). It uses CloudFormation, an accompanying Lambda function, and  Datadog's integration with Eventbridge to create a one-way integration from Datadog's security products to AWS Security Hub.
 
-If you would like to send security alerts from AWS Security Hub to Datadog, you should isntead follow [these steps](https://docs.datadoghq.com/integrations/amazon_security_hub/).
+If you would like to send security alerts from AWS Security Hub to Datadog, you should instead follow [these steps](https://docs.datadoghq.com/integrations/amazon_security_hub/).
 
 ## Architecture Diagram
 
