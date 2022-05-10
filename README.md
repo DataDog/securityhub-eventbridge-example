@@ -20,7 +20,7 @@ If you would like to send security alerts from AWS Security Hub to Datadog, you 
 
 1. Configure the Datadog Event Bridge Integration. Documentation exists for this [here](https://docs.datadoghq.com/integrations/amazon_event_bridge/).
 2. In Datadog, create a [security notification rule](https://docs.datadoghq.com/security_platform/notification_rules/) naming @awseventbridge-YOUR_BRIDGE_NAME as the destination.
-3. Deploy SAM template.  You'll need to provide the EventBridge bus name and the ARN of your SecurityHub.
+3. Deploy the SAM template.  You'll need to provide the EventBridge bus name and the ARN of your SecurityHub.
 
 > SecurityHub ARNs can be found by running `aws securityhub describe-hub | jq .HubArn` in the region that you'd like to aggregate all Datadog findings in.
 
