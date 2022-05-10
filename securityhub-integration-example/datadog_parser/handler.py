@@ -138,7 +138,6 @@ def get_asff4_event_tag(event):
                     asff4_event_tag = "TTPs/Command and Control"
                     asff4_event_tags.append(asff4_event_tag)
 
-
     logger.debug(f"asf44_tag: {asff4_event_tag}")
 
     return asff4_event_tags
@@ -199,18 +198,17 @@ def send_to_security_hub(client, findings):
 def is_eligible_event(event):
     eligible = False
     if event["detail"]["source_type_name"] in SUPPORTED_FINDING_TYPES:
-        eligible = True 
+        eligible = True
         logger.debug(f"The event is not eligible to be sent to security hub.")
 
     if "iaas:aws" in event["detail"]["tags"]:
         eligible = True
-    
+
     if "securityhub" in event["detail"]["tags"]:
         eligible = True
 
     logger.debug(f"The event eligibility to send to security hub is: {eligible}.")
     return eligible
-
 
 
 def handle(event={}, context={}):

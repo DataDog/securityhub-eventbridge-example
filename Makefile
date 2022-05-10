@@ -12,10 +12,14 @@ all:
 build:
 	docker build . -t testing-container
 
+.PHONY:format
+format:
+	docker run -ti -v $(ROOT_DIR):/opt/sechub-integration testing-container black .
+
 .PHONY:test
 test:
-	docker run -ti -v $(ROOT_DIR):/opt/sechub-integration testing-container pytest
+	docker run -ti -v $(ROOT_DIR)/securityhub-integration-example:/opt/sechub-integration testing-container pytest
 
 .PHONY:watch
 watch:
-	docker run -ti -v $(ROOT_DIR):/opt/sechub-integration testing-container pytest-watch -- --log-cli-level=DEBUG --capture=tee-sys
+	docker run -ti -v $(ROOT_DIR)/securityhub-integration-example:/opt/sechub-integration testing-container pytest-watch -- --log-cli-level=DEBUG --capture=tee-sys
