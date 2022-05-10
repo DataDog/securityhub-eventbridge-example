@@ -1,6 +1,14 @@
 # Datadog Security Hub Integration
 
-This Cloudformation and accompanying Lambda function seek to create a one-way integration from Datadog's security products to AWS Security Hub using the Datadog Eventbridge integration tile.  Datadog's integration with Eventbridge works with a variety of products within Datadog.  
+This quick start enables customers of Datadog's security platform to send security signals from Datadog to [AWS Security Hub](https://aws.amazon.com/security-hub/). It uses CloudFormation, an accompanying Lambda function, and  Datadog's integration with Eventbridge to create a one-way integration from Datadog's security products to AWS Security Hub.
+
+If you would like to send security alerts from AWS Security Hub to Datadog, you should isntead follow [these steps](https://docs.datadoghq.com/integrations/amazon_security_hub/).
+
+## Architecture Diagram
+
+<p align="center">
+  <img src="./img/securityhub-integration-example.drawio.png" alt="Diagram" />
+</p>
 
 ## Prerequisites
 
@@ -10,8 +18,8 @@ This Cloudformation and accompanying Lambda function seek to create a one-way in
 
 ## Deployment
 
-1. Configure the Datadog Event Bridge Integration.  Documentation exists for this [here](https://docs.datadoghq.com/integrations/amazon_event_bridge/).
-2. Create a notification rule naming @awseventbridge-YOUR_BRIDGE_NAME as the destination
+1. Configure the Datadog Event Bridge Integration. Documentation exists for this [here](https://docs.datadoghq.com/integrations/amazon_event_bridge/).
+2. In Datadog, create a [security notification rule](https://docs.datadoghq.com/security_platform/notification_rules/) naming @awseventbridge-YOUR_BRIDGE_NAME as the destination.
 3. Deploy the SAM template.  You'll need to provide the EventBridge bus name and the ARN of your SecurityHub.
 
 > SecurityHub ARNs can be found by running `aws securityhub describe-hub | jq .HubArn` in the region that you'd like to aggregate all Datadog findings in.
@@ -21,10 +29,11 @@ This Cloudformation and accompanying Lambda function seek to create a one-way in
 The prototype will ship findings from Datadog to SecurityHub which contain the tag: `iaas:aws`.
 Any other custom alerts can be sent as well by adding the tag `securityhub`.
 
-## Architecture Diagram
+## Result
+Example Datadog security signal viewed in AWS Security Hub:
 
 <p align="center">
-  <img src="./img/securityhub-integration-example.drawio.png" alt="Diagram" />
+  <img src="./img/securityhub-integration-signal-in-aws.png" alt="Diagram" />
 </p>
 
 ## Developer Guide 
