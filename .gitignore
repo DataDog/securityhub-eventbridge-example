@@ -1,2 +1,4 @@
 __pycache__
 .pytest_cache
+securityhub-integration-example/__pycache__
+securityhub-integration-example/.pytest_cache

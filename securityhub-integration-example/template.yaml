@@ -1,0 +1,59 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  securityhub-integration-example
+
+  SAM Template for securityhub-integration-example
+
+Globals:
+  Function:
+    Timeout: 30
+
+Parameters:
+  EventBusName:
+    Description: The name of the event bridge bus you will be pulling events from.
+    Type: String
+  SecurityHubArn:
+    Description: The ARN of the SecurityHub aggregator that you want to publish Datadog findings to.
+    Type: String
+
+Resources:
+  DatadogParserFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: datadog_parser/
+      Handler: handler.handle
+      Runtime: python3.9
+      Architectures:
+        - x86_64
+      Policies:
+      - Statement:
+        - Sid: SecHubImport
+          Effect: Allow
+          Action:
+          - securityhub:BatchImportFindings
+          Resource: !Ref SecurityHubArn
+
+  EventRule: 
+    Type: AWS::Events::Rule
+    Properties: 
+      Description: "EventRule for sending Datadog events to Security Hub"
+      EventBusName: !Ref EventBusName
+      EventPattern: 
+        source: 
+          - 
+            prefix: aws.partner
+      State: "ENABLED"
+      Targets: 
+        - 
+          Arn: 
+            Fn::GetAtt: 
+              - "DatadogParserFunction"
+              - "Arn"
+          Id: "DatadogParserTarget"
+
+Outputs:
+  DatadogParserFunction:
+    Description: "Datadog Parser Function ARN"
+    Value: !GetAtt DatadogParserFunction.Arn
+
