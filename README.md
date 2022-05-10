@@ -23,7 +23,9 @@ Any other custom alerts can be sent as well by adding the tag `securityhub`.
 
 ## Architecture Diagram
 
-![Diagram]('img/securityhub-integration-example.drawio.png')
+<p align="center">
+  <img src="./img/securityhub-integration-example.drawio.png" alt="Diagram" />
+</p>
 
 ## Developer Guide 
 
