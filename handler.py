@@ -1,5 +1,6 @@
-
+from distutils.log import error
 import boto3
+import botocore
 import json
 import logging
 import sys
@@ -11,6 +12,10 @@ from datetime import datetime
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
+logging.getLogger('boto3').setLevel(logging.CRITICAL)
+logging.getLogger('botocore').setLevel(logging.CRITICAL)
+logging.getLogger('s3transfer').setLevel(logging.CRITICAL)
+logging.getLogger('urllib3').setLevel(logging.CRITICAL)
 stdout_handler = logging.StreamHandler(sys.stdout)
 handlers = [stdout_handler]
 logging.basicConfig(
@@ -28,6 +33,7 @@ SUPPORTED_FINDING_TYPES = ["Security Monitoring"]
 SUPPORT_SOURCE_TYPES = ["cloudtrail"]
 EXCLUDED_TYPES = []
 
+
 RESOURCE_DATASTRUCTURE = dict(
     Type=None,
     Id=None,
@@ -36,6 +42,7 @@ RESOURCE_DATASTRUCTURE = dict(
     Tags=dict(),
     Details=None
 )
+
 
 SECURITHUB_DATASTRUCTURE = dict(
     AwsAccountId=None,
@@ -70,6 +77,55 @@ def ts_to_iso(timestamp):
     timestamp = timestamp / 1000
     return datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%dT%H:%M:%S.%fZ')
 
+def get_asff4_event_tag(event):
+    # Section for creating Security Hub ASFF
+    asff4_event_tag = ""
+    detail_tags = event["detail"]
+    event_tags = detail_tags["tags"]
+    logger.debug(f"This is the tag format {event_tags}")
+   
+    asf44_event_tag = ""
+
+    for x in event_tags:
+        if x == "iaas:aws":
+            for y in event_tags:
+                logger.debug(f"event_tag: {y}")
+
+                if y == "tactic:ta0001-initital-access":
+                    asff4_event_tag = "TTPs/Inititial Access"
+                    break
+                elif y == "tactic:ta0002-execution":
+                    asff4_event_tag = "TTPs/Execution"
+                    break
+                elif y == "tactic:ta0003-persistence":
+                    asff4_event_tag = "TTPs/Persistence"
+                    break
+                elif y == "tactic:ta0004-privilege-escalation":
+                    asff4_event_tag = "TTPs/Privilege Escalation"
+                    break
+                elif y == "tactic:ta0005-defense-evasion":
+                    asff4_event_tag = "TTPs/Defense Evasion"
+                    break
+                elif y == "tactic:ta0006-credential-access":
+                    asff4_event_tag = "TTPs/Credential Access"
+                    break
+                elif y == "tactic:ta0007-discovery":
+                    asff4_event_tag = "TTPs/Discovery"
+                    break
+                elif y == "tactic:ta0008-lateral-movement":
+                    asff4_event_tag = "TTPs/Lateral Movement"
+                    break
+                elif y == "tactic:ta0009-Collection":
+                    asff4_event_tag = "TTPs/Collection"
+                    break
+                elif y == "tactic:ta0011-command-control":
+                    asff4_event_tag = "TTPs/Command and Control"
+                    break
+
+    logger.debug(f"asf44_tag: {asff4_event_tag}")
+
+    return asff4_event_tag
+
 
 def datadog_finding_to_asff4(event):
     logger.debug("Attempting conversion of finding to ASFF formatting")
@@ -95,9 +151,10 @@ def datadog_finding_to_asff4(event):
         Label=map_severity(event["detail"]["meta"]["signal"]["severity"]),
         Original=event["detail"]["meta"]["signal"]["severity"]
     )
-    asff_event["Types"] = ["TTPs"] # Need to add this metadata to our alert tags
-    return asff_event
+    asff_event["Types"] = get_asff4_event_tag(event) # Need to add this metadata to our alert tags
 
+    asff_event_type_debug = asff_event["Types"]
+    logger.debug(f"here the Types for the asff event: {asff_event_type_debug}")
 
 def send_to_security_hub(client, findings):
     try:
@@ -115,7 +172,7 @@ def handle(event={}, context={}):
 
         try:
             client = boto3.client('securityhub')
-        except ClientException as e:
+        except botocore.exceptions.ClientError as e:
             logger.error(f"SecurityHub client could not be initialized due to: {e}.")
 
         # Initialize a list to store findings in the Security Hub format
